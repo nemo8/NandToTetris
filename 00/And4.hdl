@@ -1,8 +1,0 @@
-
-CHIP And4 {
-	IN a[4], b[4];
-	OUT out[4];
-	
-	PARTS:
-		AND(a = a, b = b, out = out);
-}
