@@ -16,17 +16,14 @@ CHIP RAM16K {
 
     PARTS:
         // select RAM4K chip
-        DMux8Way(in=load, sel=address[0..2], a=loadA, b=loadB, c=loadC, d=loadD, e=loadE, f=loadF, g=loadG, h=loadH);
+        DMux4Way(in=load, sel=address[0..1], a=loadA, b=loadB, c=loadC, d=loadD);
         
-        RAM4K(in=in,load=loadA, address=address[3..13], out=RAM4kA);
-        RAM4K(in=in,load=loadB, address=address[3..13], out=RAM4kB);
-        RAM4K(in=in,load=loadC, address=address[3..13], out=RAM4kC);
-        RAM4K(in=in,load=loadD, address=address[3..13], out=RAM4kD);
-        RAM4K(in=in,load=loadE, address=address[3..13], out=RAM4kE);
-        RAM4K(in=in,load=loadF, address=address[3..13], out=RAM4kF);
-        RAM4K(in=in,load=loadG, address=address[3..13], out=RAM4kG);
-        RAM4K(in=in,load=loadH, address=address[3..13], out=RAM4kH);
+        RAM4K(in=in,load=loadA, address=address[2..13], out=RAM4kA);
+        RAM4K(in=in,load=loadB, address=address[2..13], out=RAM4kB);
+        RAM4K(in=in,load=loadC, address=address[2..13], out=RAM4kC);
+        RAM4K(in=in,load=loadD, address=address[2..13], out=RAM4kD);
+        
         
         // select output from selected RAM4K
-        Mux8Way16(a=RAM4kA, b=RAM4kB, c=RAM4kC, d=RAM4kD, e=RAM4kE, f=RAM4kF, g=RAM4kG, h=RAM4kH, sel=address[0..2], out=out);
+        Mux4Way16(a=RAM4kA, b=RAM4kB, c=RAM4kC, d=RAM4kD, sel=address[0..1], out=out);
 }
