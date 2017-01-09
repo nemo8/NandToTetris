@@ -42,32 +42,49 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-        Mux16(a=x, b[0..15]=false, sel=zx, out=zxx);    // x = 0
-        Not16(in=zxx, out=nzxx);                        // not x
-        Mux16(a=zxx, b=nzxx, sel=nx, out=nxx);          // select x or not x
+        Mux16(a = x, b[0..15] = false, sel = zx, out = ozx);
+        Not16(in = ozx, out = onxb);
+        Mux16(a = ozx, b = onxb, sel = nx, out = onx);
         
-        Mux16(a=y, b[0..15]=false, sel=zy, out=zyy);    // y = 0
-        Not16(in=zyy, out=nzyy);                        // not y
-        Mux16(a=zyy, b=nzyy, sel=ny, out=nyy);          // select y or not y
+        Mux16(a = y, b[0..15] = false, sel = zy, out = ozy);
+        Not16(in = ozy, out = onyb);
+        Mux16(a = ozy, b = onyb, sel = ny, out = ony);
         
-        Add16(a=nxx, b=nyy, out=sumxy);                 // x + y
-        And16(a=nxx, b=nyy, out=andxy);                 // x & y
-        Mux16(a=sumxy, b=andxy, sel=f, out=fxy);        // select function
+        And16(a = onx, b = ony, out = oaab);
+        Add16(a = onx, b = ony, out = oapb);
+        Mux16(a = oaab, b = oapb, sel = f, out = oab);
         
-        Not16(in=fxy, out=nfxy);                        // not output
-        Mux16(a=fxy, b=nfxy, sel=no, 
-              out=out,         
-              out[0..7]=f1,
-              out[8..15]=f2,
-              out[15]=sign);                            // select function of not function
-              
+        Not16(in = oab, out = noab);
+        Mux16(a = oab, b = noab, sel = no, out = out,
+              out[0..7] = f1, out[8..15] = f2,
+              out[15] = ng);
+        
+        Or8Way(in = f1, out = o1);
+        Or8Way(in = f2, out = o2);
+        Or(a = o1, b = o2, out = nzr);
+        Not(in = nzr, out = zr);
+        
+        // Mux16(a=x, b[0..15]=false, sel=zx, out=zxx);    // x = 0
+        // Not16(in=zxx, out=nzxx);                        // not x
+        // Mux16(a=zxx, b=nzxx, sel=nx, out=nxx);          // select x or not x
+        
+        // Mux16(a=y, b[0..15]=false, sel=zy, out=zyy);    // y = 0
+        // Not16(in=zyy, out=nzyy);                        // not y
+        // Mux16(a=zyy, b=nzyy, sel=ny, out=nyy);          // select y or not y
+        
+        // Add16(a=nxx, b=nyy, out=sumxy);                 // x + y
+        // And16(a=nxx, b=nyy, out=andxy);                 // x & y
+        // Mux16(a=sumxy, b=andxy, sel=f, out=fxy);        // select function
+        
+        // Not16(in=fxy, out=nfxy);                        // not output
+        
+        // Mux16(a = fxy, b = fxy, sel = no, out = out,
+            // out[0..7] = f1, out[8..15] = f2,
+            // out[15] = ng);
 
-        // if out == 0, zr = 1
-        Or8Way(in=f1,  out=zr1);
-        Or8Way(in=f2, out=zr2);
-        Or(a=zr1, b=zr2, out=nzr);
-        Not(in=nzr, out=zr);
-        
-        And(a=sign, b=true, out=ng);                 // if out < 0, ng = 1
+        // Or8Way(in = f1, out = o1);
+        // Or8Way(in = f2, out = o2);
+        // Or(a = o1, b = o2, out = nzr);
+        // Not(in = nzr, out = zr);
                 
 }
