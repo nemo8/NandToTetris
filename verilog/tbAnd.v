@@ -21,14 +21,11 @@ module tbAnd;
         $dumpvars(0,tbAnd);
 		
 		// Initialize Inputs
-		x = 0;
-		y = 0;
-	 
-		#10 x = 1; $display("t=%3d,x=%d,y=%d,z=%d \n",$time,x,y,z);
-		#10 y = 1; $display("t=%3d,x=%d,y=%d,z=%d \n",$time,x,y,z);
-		#10 y = 0; $display("t=%3d,x=%d,y=%d,z=%d \n",$time,x,y,z);
-		#10 x = 1; $display("t=%3d,x=%d,y=%d,z=%d \n",$time,x,y,z);  
-		#50;
+		#0  x = 0; y = 0; $display("t=%3d, x=%d,y=%d,z=%d \n",$time,x,y,z);	 
+		#10 x = 0; y = 1; $display("t=%3d, x=%d,y=%d,z=%d \n",$time,x,y,z);
+		#10 x = 1; y = 0; $display("t=%3d, x=%d,y=%d,z=%d \n",$time,x,y,z);
+		#10 x = 1; y = 1; $display("t=%3d, x=%d,y=%d,z=%d \n",$time,x,y,z);
+		#40;
 		end  
 		
 	initial begin
